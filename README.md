@@ -8,6 +8,11 @@ Sort letters in string alphabetically pokelong
 
              1 sas
              2 r
+    related repos                                                                                                   
+                                                                                                                    
+    https://github.com/rogerjdeangelis/utl-attempt-to-call-fcmp-containing-pokelong-from-sql                        
+    https://github.com/rogerjdeangelis/utl-count-the-number-of-zeros-ones-and-twos-in-a-numeric-array-adr-peek-poke 
+    https://github.com/rogerjdeangelis/utl-using-peek-and-poke-to-conditionally-sum-subsets-of-an-array                          
 
     github
     https://tinyurl.com/budw93x4
