@@ -11,6 +11,12 @@ github
 https://tinyurl.com/budw93x4
 https://github.com/rogerjdeangelis/utl-sort-letters-in-string-alphabetically-using-r-and-sas-pokelong
 
+related repos                                                                                                   
+                                                                                                                
+https://github.com/rogerjdeangelis/utl-attempt-to-call-fcmp-containing-pokelong-from-sql                        
+https://github.com/rogerjdeangelis/utl-count-the-number-of-zeros-ones-and-twos-in-a-numeric-array-adr-peek-poke 
+https://github.com/rogerjdeangelis/utl-using-peek-and-poke-to-conditionally-sum-subsets-of-an-array             
+                                                                                                                
 see
 https://goo.gl/JCOrym
 http://stackoverflow.com/questions/43812674/sort-letters-in-string-alphabetically-sas
