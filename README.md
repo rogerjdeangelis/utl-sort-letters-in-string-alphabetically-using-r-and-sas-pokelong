@@ -8,15 +8,20 @@ Sort letters in string alphabetically pokelong
 
              1 sas
              2 r
-    related repos                                                                                                   
-                                                                                                                    
-    https://github.com/rogerjdeangelis/utl-attempt-to-call-fcmp-containing-pokelong-from-sql                        
-    https://github.com/rogerjdeangelis/utl-count-the-number-of-zeros-ones-and-twos-in-a-numeric-array-adr-peek-poke 
-    https://github.com/rogerjdeangelis/utl-using-peek-and-poke-to-conditionally-sum-subsets-of-an-array                          
+             3 sas input @
+               Bartosz Jablonski
+               yabwon@gmail.com
+               Clever use of blank 43 bytes using in l1-l43 @
 
     github
     https://tinyurl.com/budw93x4
     https://github.com/rogerjdeangelis/utl-sort-letters-in-string-alphabetically-using-r-and-sas-pokelong
+
+    related repos
+
+    https://github.com/rogerjdeangelis/utl-attempt-to-call-fcmp-containing-pokelong-from-sql
+    https://github.com/rogerjdeangelis/utl-count-the-number-of-zeros-ones-and-twos-in-a-numeric-array-adr-peek-poke
+    https://github.com/rogerjdeangelis/utl-using-peek-and-poke-to-conditionally-sum-subsets-of-an-array
 
     see
     https://goo.gl/JCOrym
@@ -30,9 +35,9 @@ Sort letters in string alphabetically pokelong
     /*          INPUT                                             PROCESS                     OUTPUT                          */
     /*                                                                                                                        */
     /*                                                                                                                        */
-    /* %let str=the quick brown fox jumps over the lazy dog;                  SORTED_SAS=abcdeeefghhijklmnoooopqrrsttuuvwxyz  */
-    /*                                                        SAS             SORTED_R  =abcdeeefghhijklmnoooopqrrsttuuvwxyz  */
-    /*                                                        ===                                                             */
+    /* %let str=the quick brown fox jumps over the lazy dog;                1  SORTED_SAS=abcdeeefghhijklmnoooopqrrsttuuvwxyz */
+    /*                                                        SAS           2  SORTED_R  =abcdeeefghhijklmnoooopqrrsttuuvwxyz */
+    /*                                                        ===           3  STRING=abcdeeefghhijklmnoooopqrrsttuuvwxyz     */
     /*                                                                                                                        */
     /*                                                        data _null_;                                                    */
     /*                                                         myword = "&str";                                               */
@@ -57,6 +62,28 @@ Sort letters in string alphabetically pokelong
     /*                                                        ",return=sorted_r);                                             */
     /*                                                                                                                        */
     /*                                                        %put &=sorted_r;                                                */
+    /*                                                                                                                        */
+    /*                                                        SAS INPUT @                                                     */
+    /*                                                        S==========                                                     */
+    /*                                                                                                                        */
+    /*                                                        %let l = %length(&str.);                                        */
+    /*                                                                                                                        */
+    /*                                                        data _null_;                                                    */
+    /*                                                          infile cards;                                                 */
+    /*                                                          input @;                                                      */
+    /*                                                          length STRING $ &l.;                                          */
+    /*                                                          string=symget('str');                                         */
+    /*                                                          put string=;                                                  */
+    /*                                                          _infile_=string;                                              */
+    /*                                                          input (l1-l&l.) ($1.);                                        */
+    /*                                                          call sortc(of L:);                                            */
+    /*                                                          string = cats(of L:);                                         */
+    /*                                                          put string=;                                                  */
+    /*                                                          stop;                                                         */
+    /*                                                        cards;                                                          */
+    /*                                                        *                                                               */
+    /*                                                        ;                                                               */
+    /*                                                        run;                                                            */
     /*                                                                                                                        */
     /**************************************************************************************************************************/
 
@@ -125,6 +152,37 @@ Sort letters in string alphabetically pokelong
     /*                                                                                                                        */
     /**************************************************************************************************************************/
 
+    /*____                   _                   _       ____
+    |___ /   ___  __ _ ___  (_)_ __  _ __  _   _| |_    / __ \
+      |_ \  / __|/ _` / __| | | `_ \| `_ \| | | | __|  / / _` |
+     ___) | \__ \ (_| \__ \ | | | | | |_) | |_| | |_  | | (_| |
+    |____/  |___/\__,_|___/ |_|_| |_| .__/ \__,_|\__|  \ \__,_|
+                                    |_|                 \____/
+    */
+
+
+
+    %let str=the quick brown fox jumps over the lazy dog;
+
+    %let l = %length(&str.);
+
+    data _null_;
+      infile cards;
+      input @;
+      length STRING $ &l.;
+      string=symget('str');
+      put string=;
+      _infile_=string;
+      input (l1-l&l.) ($1.);
+      call sortc(of L:);
+      string = cats(of L:);
+      put string=;
+      stop;
+    cards;
+    *
+    ;
+    run;
+
     /*              _
       ___ _ __   __| |
      / _ \ `_ \ / _` |
@@ -132,3 +190,4 @@ Sort letters in string alphabetically pokelong
      \___|_| |_|\__,_|
 
     */
+
