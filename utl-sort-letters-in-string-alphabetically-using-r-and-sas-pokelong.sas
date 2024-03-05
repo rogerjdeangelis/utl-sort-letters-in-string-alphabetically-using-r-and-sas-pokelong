@@ -10,6 +10,9 @@ Sort letters in string alphabetically pokelong
            Bartosz Jablonski
            yabwon@gmail.com
            Clever use of blank 43 bytes using in l1-l43 @
+         4 sas multiple strings
+           Keintz, Mark
+           mkeintz@outlook.com
 
 github
 https://tinyurl.com/budw93x4
@@ -34,8 +37,8 @@ http://stackoverflow.com/users/667489/user667489
 /*                                                                                                                        */
 /*                                                                                                                        */
 /* %let str=the quick brown fox jumps over the lazy dog;                1  SORTED_SAS=abcdeeefghhijklmnoooopqrrsttuuvwxyz */
-/*                                                        SAS           2  SORTED_R  =abcdeeefghhijklmnoooopqrrsttuuvwxyz */
-/*                                                        ===           3  STRING=abcdeeefghhijklmnoooopqrrsttuuvwxyz     */
+/*                                                        1. SAS        2  SORTED_R  =abcdeeefghhijklmnoooopqrrsttuuvwxyz */
+/*                                                        ======        3  STRING=abcdeeefghhijklmnoooopqrrsttuuvwxyz     */
 /*                                                                                                                        */
 /*                                                        data _null_;                                                    */
 /*                                                         myword = "&str";                                               */
@@ -49,8 +52,8 @@ http://stackoverflow.com/users/667489/user667489
 /*                                                                                                                        */
 /*                                                        %put &=sorted_sas;                                              */
 /*                                                                                                                        */
-/*                                                        R                                                               */
-/*                                                        =                                                               */
+/*                                                        2. R                                                            */
+/*                                                        ====                                                            */
 /*                                                                                                                        */
 /*                                                        %utl_submit_r64x("                                              */
 /*                                                        library(gdata);                                                 */
@@ -61,8 +64,8 @@ http://stackoverflow.com/users/667489/user667489
 /*                                                                                                                        */
 /*                                                        %put &=sorted_r;                                                */
 /*                                                                                                                        */
-/*                                                        SAS INPUT @                                                     */
-/*                                                        S==========                                                     */
+/*                                                        3. SAS INPUT @                                                  */
+/*                                                        ===========                                                     */
 /*                                                                                                                        */
 /*                                                        %let l = %length(&str.);                                        */
 /*                                                                                                                        */
@@ -82,6 +85,38 @@ http://stackoverflow.com/users/667489/user667489
 /*                                                        *                                                               */
 /*                                                        ;                                                               */
 /*                                                        run;                                                            */
+/*                                                                                                                        */
+/*                                                       4. sas multiple strings                                          */
+/*                                                                                                                        */
+/*                                                                                                                        */
+/*                                                        data before;                                                    */
+/*                                                          infile datalines;                                             */
+/*                                                          input string $char70.;                                        */
+/*                                                        datalines;                                                      */
+/*                                                        the quick brown fox jumps over the lazy dog                     */
+/*                                                        here is another phrase with lots of letters                     */
+/*                                                        when in the course of human events                              */
+/*                                                        run;                                                            */
+/*                                                                                                                        */
+/*                                                        data want (drop=_:);                                            */
+/*                                                          set before;                                                   */
+/*                                                          infile cards ;                                                */
+/*                                                          if _n_=1 then input  @;                                       */
+/*                                                          array _ltrs {70} $1;                                          */
+/*                                                          _infile_ = string;                                            */
+/*                                                          input (_LTRS1-_LTRS70) ($1.) @1 @@;                           */
+/*                                                          call sortc (of _ltrs{*});                                     */
+/*                                                          string=cats(of _ltrs{*});                                     */
+/*                                                        cards;                                                          */
+/*                                                        *                                                               */
+/*                                                        run;                                                            */
+/*                                                                                                                        */
+/*                                                        OUTPUT                                                          */
+/*                                                                                                                        */
+/*                                                        the quick brown fox jumps over the lazy dog                     */
+/*                                                        here is another phrase with lots of letters                     */
+/*                                                        when in the course of human events                              */
+/*                                                        as i walk through this world nothing can stop the duke of earl  */
 /*                                                                                                                        */
 /**************************************************************************************************************************/
 
@@ -180,6 +215,64 @@ cards;
 *
 ;
 run;
+
+/*  _                     _ _   _       _            _        _
+| || |    _ __ ___  _   _| | |_(_)_ __ | | ___   ___| |_ _ __(_)_ __   __ _ ___
+| || |_  | `_ ` _ \| | | | | __| | `_ \| |/ _ \ / __| __| `__| | `_ \ / _` / __|
+|__   _| | | | | | | |_| | | |_| | |_) | |  __/ \__ \ |_| |  | | | | | (_| \__ \
+   |_|   |_| |_| |_|\__,_|_|\__|_| .__/|_|\___| |___/\__|_|  |_|_| |_|\__, |___/
+                                 |_|                                  |___/
+*/
+
+proc datasets lib=work kill; run;quit;
+
+data before;
+  infile datalines;
+  input string $char70.;
+datalines;
+the quick brown fox jumps over the lazy dog
+here is another phrase with lots of letters
+when in the course of human events
+run;
+
+data want (drop=_:);
+  set before;
+  infile cards ;
+  if _n_=1 then input  @;
+  array _ltrs {70} $1;
+  _infile_ = string;
+  input (_LTRS1-_LTRS70) ($1.) @1 @@;
+  call sortc (of _ltrs{*});
+  string=cats(of _ltrs{*});
+cards;
+*
+run;
+
+/**************************************************************************************************************************/
+/*                                                                                                                        */
+/* INPUT                                                                                                                  */
+/* =====                                                                                                                  */
+/*                                                                                                                        */
+/* Obs    STRING                                                                                                          */
+/*                                                                                                                        */
+/*  1     the quick brown fox jumps over the lazy dog                                                                     */
+/*  2     here is another phrase with lots of letters                                                                     */
+/*  3     when in the course of human events                                                                              */
+/*  4     as i walk through this world nothing can stop the duke of earl                                                  */
+/*                                                                                                                        */
+/*                                                                                                                        */
+/* OUTPUT                                                                                                                 */
+/* ======                                                                                                                 */
+/*                                                                                                                        */
+/* Obs    STRING                                                                                                          */
+/*                                                                                                                        */
+/*  1     abcdeeefghhijklmnoooopqrrsttuuvwxyz                                                                             */
+/*  2     aaeeeeeefhhhhiillnoooprrrrsssstttttw                                                                            */
+/*  3     aceeeeefhhhimnnnnoorssttuuvw                                                                                    */
+/*  4     aaaacddeeefgghhhhhiiikklllnnnoooooprrrssstttttuuww                                                              */
+/*                                                                                                                        */
+/**************************************************************************************************************************/
+
 
 /*              _
   ___ _ __   __| |
